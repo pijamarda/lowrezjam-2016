@@ -16,7 +16,7 @@ player = { 	x = 0, y = 0,
 			dst_x=0, dst_y=0
 		 }
 
-units
+
 
 function love.load(arg)
 	--
@@ -36,6 +36,7 @@ function love.update(dt)
 		if love.keyboard.isDown('left', 'a') then
 			if player.x > 1 then
 				player.direction = 'left'
+				player.dst_x = (player.x - 1) * PIXEL_WIDTH
 				player.moving = true
 			end
 		elseif love.keyboard.isDown('right', 'd') then
@@ -62,9 +63,16 @@ function love.update(dt)
 
 	else
 		--
-		if player.direction == 'right' and player.screen_x < player.dst_x then
+		if player.direction == 'right' and player.screen_x <= player.dst_x then
 			player.screen_x = player.screen_x + (player.speed * dt)
 			if player.screen_x >= player.dst_x then
+				player.x = player.x + 1
+				player.moving = false
+			end
+		elseif player.direction == 'left' and player.screen_x >= player.dst_x then
+			player.screen_x = player.screen_x - (player.speed * dt)
+			if player.screen_x <= player.dst_x then
+				player.x = player.x - 1
 				player.moving = false
 			end
 		end		
@@ -84,6 +92,6 @@ function love.draw(dt)
     end
 
     love.graphics.setColor(0, 0, 255, 100)
-    love.graphics.rectangle('fill',screen_x, screen_y, PIXEL_WIDTH,PIXEL_HEIGHT)
+    love.graphics.rectangle('fill',player.screen_x, player.screen_y, PIXEL_WIDTH,PIXEL_HEIGHT)
 	
 end
