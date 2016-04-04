@@ -9,7 +9,14 @@ MAX_STARS = PIXEL_WIDTH * PIXEL_HEIGHT
 
 MAP = {}
 
-player = { x = 1, y = 1, img = nil, moving=false}
+player = { 	x = 0, y = 0, 
+			img = nil, moving=false, direction='right', 
+			speed = 150,
+			screen_x = 0, screen_y = 0, 
+			dst_x=0, dst_y=0
+		 }
+
+units
 
 function love.load(arg)
 	--
@@ -28,11 +35,14 @@ function love.update(dt)
 
 		if love.keyboard.isDown('left', 'a') then
 			if player.x > 1 then
-				player.x = player.x - 1
+				player.direction = 'left'
+				player.moving = true
 			end
 		elseif love.keyboard.isDown('right', 'd') then
 			if player.x < SCREEN_WIDTH then
-				player.x = player.x + 1
+				player.direction = 'right'
+				player.dst_x = (player.x + 1) * PIXEL_WIDTH
+				player.moving = true
 			end
 		end
 
@@ -40,16 +50,24 @@ function love.update(dt)
 
 		if love.keyboard.isDown('up', 'w') then
 			if player.y > 1 then
-				player.y = player.y - 1
+				player.direction = 'up'
+				player.moving = true
 			end
 		elseif love.keyboard.isDown('down', 's') then
 			if player.y < SCREEN_HEIGHT then
-				player.y = player.y + 1
+				player.direction = 'down'
+				player.moving = true
 			end
 		end	
 
 	else
 		--
+		if player.direction == 'right' and player.screen_x < player.dst_x then
+			player.screen_x = player.screen_x + (player.speed * dt)
+			if player.screen_x >= player.dst_x then
+				player.moving = false
+			end
+		end		
 	end
 	
 end
@@ -66,6 +84,6 @@ function love.draw(dt)
     end
 
     love.graphics.setColor(0, 0, 255, 100)
-    love.graphics.rectangle('fill',(player.x-1)*PIXEL_WIDTH,(player.y-1)*PIXEL_HEIGHT, PIXEL_WIDTH,PIXEL_HEIGHT)
+    love.graphics.rectangle('fill',screen_x, screen_y, PIXEL_WIDTH,PIXEL_HEIGHT)
 	
 end
