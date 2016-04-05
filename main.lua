@@ -45,6 +45,9 @@ end
 
 ----
 
+PLAYER_START_X = 3
+PLAYER_START_Y = 3
+
 SCREEN_WIDTH = 8
 SCREEN_HEIGHT = 8
 
@@ -54,10 +57,10 @@ PIXEL_HEIGHT = love.graphics.getHeight() / SCREEN_HEIGHT
 
 MAP = {}
 
-player = { 	x = 3, y = 3, 
+player = { 	x = PLAYER_START_X, y = PLAYER_START_Y, 
 			img = nil, moving=false, direction='right', 
 			speed = 150,
-			screen_x = PIXEL_WIDTH*3, screen_y = PIXEL_HEIGHT*3, 
+			screen_x = PIXEL_WIDTH*PLAYER_START_X, screen_y = PIXEL_HEIGHT*PLAYER_START_Y, 
 			dst_x=0, dst_y=0,
             height=PIXEL_WIDTH, width=PIXEL_WIDTH
 		 }
@@ -130,14 +133,14 @@ function love.update(dt)
 			end
         elseif player.direction == 'up' and player.screen_y >= player.dst_y then
 			player.screen_y = player.screen_y - (player.speed * dt)
-            camera.y = player.screen_y - (player.speed * dt)
+            camera.y = camera.y - (player.speed * dt)
 			if player.screen_y <= player.dst_y then
 				player.y = player.y - 1
 				player.moving = false
 			end
         elseif player.direction == 'down' and player.screen_y <= player.dst_y then
 			player.screen_y = player.screen_y + (player.speed * dt)
-            camera.y = player.screen_y + (player.speed * dt)
+            camera.y = camera.y + (player.speed * dt)
 			if player.screen_y >= player.dst_y then
 				player.y = player.y + 1
 				player.moving = false
