@@ -4,11 +4,13 @@ require("camera")
 
 ----
 
+SCREEN_WIDTH = 8
+SCREEN_HEIGHT = 8
+
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 
-SCREEN_WIDTH = 8
-SCREEN_HEIGHT = 8
+
 
 PIXEL_WIDTH = love.graphics.getWidth() / SCREEN_WIDTH
 PIXEL_HEIGHT = love.graphics.getHeight() / SCREEN_HEIGHT
