@@ -34,7 +34,7 @@ function love.update(dt)
 		-- Player Horizontal Movement
 
 		if love.keyboard.isDown('left', 'a') then
-			if player.x > 1 then
+			if player.x > 0 then
 				player.direction = 'left'
 				player.dst_x = (player.x - 1) * PIXEL_WIDTH
 				player.moving = true
@@ -50,29 +50,44 @@ function love.update(dt)
 		-- Player Vertical Movement
 
 		if love.keyboard.isDown('up', 'w') then
-			if player.y > 1 then
+			if player.y > 0 then
 				player.direction = 'up'
+				player.dst_y = (player.y - 1) * PIXEL_HEIGHT
 				player.moving = true
 			end
 		elseif love.keyboard.isDown('down', 's') then
 			if player.y < SCREEN_HEIGHT then
 				player.direction = 'down'
+				player.dst_y = (player.y + 1) * PIXEL_HEIGHT
 				player.moving = true
 			end
 		end	
 
 	else
 		--
-		if player.direction == 'right' and player.screen_x <= player.dst_x then
+		
+		if player.direction == 'left' and player.screen_x >= player.dst_x then
+			player.screen_x = player.screen_x - (player.speed * dt)
+			if player.screen_x <= player.dst_x then
+				player.x = player.x - 1
+				player.moving = false
+			end
+        elseif player.direction == 'right' and player.screen_x <= player.dst_x then
 			player.screen_x = player.screen_x + (player.speed * dt)
 			if player.screen_x >= player.dst_x then
 				player.x = player.x + 1
 				player.moving = false
 			end
-		elseif player.direction == 'left' and player.screen_x >= player.dst_x then
-			player.screen_x = player.screen_x - (player.speed * dt)
-			if player.screen_x <= player.dst_x then
-				player.x = player.x - 1
+        elseif player.direction == 'up' and player.screen_y >= player.dst_y then
+			player.screen_y = player.screen_y - (player.speed * dt)
+			if player.screen_y <= player.dst_y then
+				player.y = player.y - 1
+				player.moving = false
+			end
+        elseif player.direction == 'down' and player.screen_y <= player.dst_y then
+			player.screen_y = player.screen_y + (player.speed * dt)
+			if player.screen_y >= player.dst_y then
+				player.y = player.y + 1
 				player.moving = false
 			end
 		end		
