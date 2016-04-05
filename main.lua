@@ -58,7 +58,8 @@ player = { 	x = 0, y = 0,
 			img = nil, moving=false, direction='right', 
 			speed = 150,
 			screen_x = 0, screen_y = 0, 
-			dst_x=0, dst_y=0
+			dst_x=0, dst_y=0,
+            height=PIXEL_WIDTH, width=PIXEL_WIDTH
 		 }
 
 
@@ -114,14 +115,14 @@ function love.update(dt)
 		
 		if player.direction == 'left' and player.screen_x >= player.dst_x then
 			player.screen_x = player.screen_x - (player.speed * dt)
-            camera.x = player.screen_x - (player.speed * dt)
+            camera.x = (player.screen_x - (player.speed * dt)) + player.width/2
 			if player.screen_x <= player.dst_x then
 				player.x = player.x - 1
 				player.moving = false
 			end
         elseif player.direction == 'right' and player.screen_x <= player.dst_x then
 			player.screen_x = player.screen_x + (player.speed * dt)
-            camera.x = player.screen_x + (player.speed * dt)
+            camera.x = (player.screen_x + (player.speed * dt)) +  + player.width/2
 			if player.screen_x >= player.dst_x then
 				player.x = player.x + 1                
 				player.moving = false
@@ -158,6 +159,6 @@ function love.draw(dt)
     end
 
     love.graphics.setColor(0, 0, 255, 100)
-    love.graphics.rectangle('fill',player.screen_x, player.screen_y, PIXEL_WIDTH,PIXEL_HEIGHT)
+    love.graphics.rectangle('fill',player.screen_x, player.screen_y, player.width,player.height)
 	camera:unset()
 end
